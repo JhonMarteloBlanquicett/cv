@@ -1,6 +1,7 @@
 services:
   - type: web
     name: cv-match-backend
+    plan: free
     env: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -13,6 +14,7 @@ services:
 
   - type: web
     name: cv-match-frontend
+    plan: free
     env: node
     rootDir: frontend
     buildCommand: npm install && npm run build
