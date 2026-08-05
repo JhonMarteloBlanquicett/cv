@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:-http://localhost:3000}
+      BACKEND_CORS_ORIGINS: '["http://localhost:3000"]'
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health')"]
       interval: 20s
