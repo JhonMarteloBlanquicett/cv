@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: cv-match-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: BACKEND_CORS_ORIGINS
+        value: '["*"]' # Allow all for simplicity, or restrict to frontend URL later
+
+  - type: web
+    name: cv-match-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      - key: NEXT_PUBLIC_API_BASE_URL
+        fromService:
+          type: web
+          name: cv-match-backend
+          envVarKey: RENDER_EXTERNAL_URL
+          # Note: Next.js reads NEXT_PUBLIC_ variables at BUILD time if used in getStaticProps,
+          # but for client-side API calls it will work. The actual value must append /api/v1
+          # We'll use a hack to pass just the URL, and the code might need it with /api/v1

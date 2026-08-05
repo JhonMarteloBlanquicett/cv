@@ -4,7 +4,11 @@ import type { CoverLetterResult } from "@/types/cover-letter";
 import type { StructuredJob } from "@/types/job";
 import type { AdaptedCV, MatchScoreResult, SkillCoverageItem } from "@/types/scoring";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+let rawApiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
+if (rawApiBase && !rawApiBase.endsWith("/api/v1")) {
+  rawApiBase = rawApiBase.replace(/\/+$/, "") + "/api/v1";
+}
+const API_BASE_URL = rawApiBase;
 
 async function safeFetch(input: RequestInfo | URL, init: RequestInit | undefined, label: string) {
   try {
